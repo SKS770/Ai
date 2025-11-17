@@ -1,0 +1,138 @@
+#1st question 
+
+import math
+# Display the board
+def print_board(board):
+    for row in board:
+        print(row[0], "|", row[1], "|", row[2])
+        print("---------")
+# Check for winner
+def check_winner(board):
+    # Rows, columns and diagonals
+    win_states = [
+        [board[0][0], board[0][1], board[0][2]],
+        [board[1][0], board[1][1], board[1][2]],
+        [board[2][0], board[2][1], board[2][2]],
+        [board[0][0], board[1][0], board[2][0]],
+        [board[0][1], board[1][1], board[2][1]],
+        [board[0][2], board[1][2], board[2][2]],
+        [board[0][0], board[1][1], board[2][2]],
+        [board[2][0], board[1][1], board[0][2]],
+    ]
+    if ["X", "X", "X"] in win_states:
+        return "X"  # AI Wins
+    if ["O", "O", "O"] in win_states:
+        return "O"  # Player Wins
+    return None
+# Check if moves left
+def moves_left(board):
+    for row in board:
+        if "_" in row:
+            return True
+    return False
+# Minimax with Alpha-Beta Pruning
+def minimax(board, depth, is_max, alpha, beta):
+    winner = check_winner(board)
+    # Scoring
+    if winner == "X":
+        return 1
+    elif winner == "O":
+        return -1
+    elif not moves_left(board):
+        return 0
+    # Maximizing player (AI - X)
+    if is_max:
+        best = -math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == "_":
+                    board[i][j] = "X"  # AI move
+                    value = minimax(board, depth + 1, False, alpha, beta)
+                    board[i][j] = "_"
+                    best = max(best, value)
+                    alpha = max(alpha, best)
+                    if beta <= alpha:
+                        break
+        return best
+    # Minimizing player (Human - O)
+    else:
+        best = math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == "_":
+                    board[i][j] = "O"
+                    value = minimax(board, depth + 1, True, alpha, beta)
+                    board[i][j] = "_"
+                    best = min(best, value)
+                    beta = min(beta, best)
+                    if beta <= alpha:
+                        break
+        return best
+# Find best move for AI
+def best_move(board):
+    best_val = -math.inf
+    move = (-1, -1)
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == "_":
+                board[i][j] = "X"  # Try move
+                move_val = minimax(board, 0, False, -math.inf, math.inf)
+                board[i][j] = "_"
+                if move_val > best_val:
+                    best_val = move_val
+                    move = (i, j)
+    return move
+# Game loop
+def play_game():
+    board = [["", "", "_"],
+             ["", "", "_"],
+             ["", "", "_"]]
+    print("Tic Tac Toe — AI uses X, You use O")
+    print_board(board)
+    while True:
+        # Human turn
+        print("\nYour Turn (O)")
+        r = int(input("Enter row (0-2): "))
+        c = int(input("Enter column (0-2): "))
+        if board[r][c] != "_":
+            print("Invalid move! Try again.")
+            continue
+        board[r][c] = "O"
+        print_board(board)
+        if check_winner(board) == "O":
+            print("You win!")
+            break
+        if not moves_left(board):
+            print("It's a draw!")
+            break
+        # AI turn
+        print("\nAI's Turn (X)")
+        r, c = best_move(board)
+        board[r][c] = "X"
+        print_board(board)
+        if check_winner(board) == "X":
+            print("AI wins!")
+            break
+        if not moves_left(board):
+            print("It's a draw!")
+            break
+# Start Game
+play_game()
+
+
+# 2nd question # Simple Chatbot Program
+
+print("Chatbot: Hello! I am a simple chatbot. Type 'bye' to exit.")
+while True:
+    user = input("You: ").lower()
+    if user == "hi" or user == "hello":
+        print("Chatbot: Hello! How can I help you?")
+    elif user == "how are you":
+        print("Chatbot: I'm just a program, but I'm doing great!")
+    elif user == "what is your name":
+        print("Chatbot: I am a simple chatbot created in Python.")
+    elif user == "bye":
+        print("Chatbot: Goodbye! Have a great day!")
+        break
+    else:
+        print("Chatbot: Sorry, I didn't understand that.")
