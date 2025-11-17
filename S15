@@ -1,0 +1,25 @@
+1) Write a Program to Implement Monkey Banana Problem using Python. 
+
+
+def monkey_banana():
+    state = {'monkey': 'A', 'box': 'B', 'banana': 'C', 'monkey_on_box': False, 'has_banana': False}
+    steps = 0
+    print("Initial State:", state)
+    # Step 1: Move monkey to box
+    state['monkey'] = 'B'
+    steps += 1
+    print(f"Step {steps}: Monkey moves to the box.")
+    # Step 2: Monkey climbs on box
+    state['monkey_on_box'] = True
+    steps += 1
+    print(f"Step {steps}: Monkey climbs on the box.")
+    # Step 3: Monkey takes banana
+    if state['monkey'] == 'B' and state['monkey_on_box']:
+        state['has_banana'] = True
+        steps += 1
+        print(f"Step {steps}: Monkey grabs the banana!")
+    print("\nFinal State:", state)
+    print("Total Steps:", steps)
+monkey_banana()
+
+
