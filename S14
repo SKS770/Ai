@@ -1,0 +1,59 @@
+1) Write a python program to sort the sentence in alphabetical order? 
+
+sentence = input("Enter a sentence: ")
+words = sentence.split()
+words.sort()
+print("Words in alphabetical order:")
+for word in words:
+    print(word)
+
+slip 14th 2nd q.                  # N-Queens problem using Backtracking
+
+def print_board(board, N):
+    for i in range(N):
+        for j in range(N):
+            print(board[i][j], end=" ")
+        print()
+    print()
+
+
+2) Check if a queen can be placed at board[row][col]
+
+def is_safe(board, row, col, N):
+    # Check the row on left side
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+    # Upper diagonal
+    i, j = row, col
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
+    # Lower diagonal
+    i, j = row, col
+    while i < N and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i += 1
+        j -= 1
+    return True
+# Solve N queens using Backtracking
+def solve_n_queens(board, col, N):
+    if col >= N:
+        print("Solution:")
+        print_board(board, N)
+        return True
+    result = False
+    for row in range(N):
+        if is_safe(board, row, col, N):
+            board[row][col] = 1
+            result = solve_n_queens(board, col + 1, N) or result
+            board[row][col] = 0  # backtrack
+    return result
+# Main Function
+N = int(input("Enter number of queens (N): "))
+board = [[0 for _ in range(N)] for _ in range(N)]
+if not solve_n_queens(board, 0, N):
+    print("No solution exists.")
