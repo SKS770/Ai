@@ -1,0 +1,42 @@
+#2nd question-Write a Python program to implement Depth First Search algorithm. 
+Refer the following graph as an Input for the program. [Initial 
+
+
+#node=1,Goal node=8]
+#Depth First Search (DFS) implementation in Python
+# Define the graph as an adjacency list
+graph = {
+    1: [2, 3],
+    2: [4, 5],
+    3: [6, 7],
+    4: [8],
+    5: [8],
+    6: [8],
+    7: [8],
+    8: []
+}
+# DFS function
+def dfs(graph, start, goal, visited=None, path=None):
+    if visited is None:
+        visited = set()
+    if path is None:
+        path = []
+    visited.add(start)
+    path.append(start)
+    if start == goal:
+        return path
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result = dfs(graph, neighbor, goal, visited, path)
+            if result is not None:
+                return result
+    path.pop()
+    return None
+# Main Program
+start_node = 1
+goal_node = 8
+path = dfs(graph, start_node, goal_node)
+if path:
+    print("Path found from node", start_node, "to", goal_node, ":", path)
+else:
+    print("No path found.")
