@@ -1,6 +1,5 @@
 # 1st question
 
-
 import heapq
 # Goal State
 goal_state = "123456780"   # 0 = blank
@@ -63,3 +62,40 @@ if solution:
         print_state(step)
 else:
     print("No solution exists.")
+
+
+
+#2) Write a Python program to solve water jug problem. 2 jugs with capacity 
+5 gallon and 7 gallon are given with unlimited water supply respectively. 
+The target to achieve is 4 gallon of water in second jug. 
+
+
+def water_jug_5_7():
+    from collections import deque
+    capacity = (5, 7)
+    visited = set()
+    queue = deque([(0, 0)])  # (jug5, jug7)
+    target = 4  # Example target (you can modify)
+    print("Steps to reach 4 gallons (example):\n")
+    while queue:
+        (jug5, jug7) = queue.popleft()
+        if (jug5, jug7) in visited:
+            continue
+        visited.add((jug5, jug7))
+        print(f"Jug5: {jug5}  |  Jug7: {jug7}")
+        if jug5 == target or jug7 == target:
+            print("\nGoal achieved!")
+            break
+        # Fill operations
+        queue.append((capacity[0], jug7))
+        queue.append((jug5, capacity[1]))
+        # Empty operations
+        queue.append((0, jug7))
+        queue.append((jug5, 0))
+        # Pour 5 -> 7
+        pour = min(jug5, capacity[1] - jug7)
+        queue.append((jug5 - pour, jug7 + pour))
+        # Pour 7 -> 5
+        pour = min(jug7, capacity[0] - jug5)
+        queue.append((jug5 + pour, jug7 - pour))
+water_jug_5_7()
