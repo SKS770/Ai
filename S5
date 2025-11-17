@@ -1,0 +1,31 @@
+#1st question - Write a python program using mean end analysis algorithm problem of 
+transforming a string of lowercase letters into another string.
+
+
+def means_end_analysis(start, goal):
+    print(f"Initial String: {start}")
+    print(f"Goal String: {goal}\n")
+    start = list(start)
+    goal = list(goal)
+    steps = 0
+    while start != goal:
+        for i in range(len(goal)):
+            if i < len(start):
+                if start[i] != goal[i]:
+                    print(f"Step {steps + 1}: Replace '{start[i]}' with '{goal[i]}' at position {i+1}")
+                    start[i] = goal[i]
+                    steps += 1
+            else:
+                print(f"Step {steps + 1}: Add '{goal[i]}' to the string")
+                start.append(goal[i])
+                steps += 1
+        if len(start) > len(goal):
+            print(f"Step {steps + 1}: Remove extra character '{start[-1]}'")
+            start.pop()
+            steps += 1
+    print("\nFinal Transformed String:", "".join(start))
+    print("Total Steps:", steps)
+# Example
+start_str = "cat"
+goal_str = "dog"
+means_end_analysis(start_str, goal_str)
