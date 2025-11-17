@@ -1,0 +1,68 @@
+1) Write a python program using mean end analysis algorithm problem of 
+transforming a string of lowercase letters into another string. 
+
+def means_end_analysis(start, goal):
+    print(f"Initial String: {start}")
+    print(f"Goal String: {goal}\n")
+    start = list(start)
+    goal = list(goal)
+    steps = 0
+    while start != goal:
+        for i in range(len(goal)):
+            if i < len(start):
+                if start[i] != goal[i]:
+                    print(f"Step {steps + 1}: Replace '{start[i]}' with '{goal[i]}' at position {i+1}")
+                    start[i] = goal[i]
+                    steps += 1
+            else:
+                print(f"Step {steps + 1}: Add '{goal[i]}' to the string")
+                start.append(goal[i])
+                steps += 1
+        if len(start) > len(goal):
+            print(f"Step {steps + 1}: Remove extra character '{start[-1]}'")
+            start.pop()
+            steps += 1
+    print("\nFinal Transformed String:", "".join(start))
+    print("Total Steps:", steps)
+# Example
+start_str = "cat"
+goal_str = "dog"
+means_end_analysis(start_str, goal_str)
+
+
+2) Write a Python program to solve water jug problem. Two jugs with 
+capacity 4 gallon and 3 gallon are given with unlimited water supply 
+respectively. The target is to achieve 2 gallon of water in second jug
+
+
+def water_jug_4_3():
+    from collections import deque
+    capacity = (4, 3)
+    visited = set()
+    queue = deque([(0, 0)])  # (jug4, jug3)
+    target = 2
+    print("Steps to get 2 gallons in the 3-gallon jug:\n")
+    while queue:
+        (jug4, jug3) = queue.popleft()
+        if (jug4, jug3) in visited:
+            continue
+        visited.add((jug4, jug3))
+        print(f"Jug4: {jug4}  |  Jug3: {jug3}")
+        if jug3 == target:
+            print("\nGoal achieved!")
+            break
+        # Fill Jug4
+        queue.append((capacity[0], jug3))
+        # Fill Jug3
+        queue.append((jug4, capacity[1]))
+        # Empty Jug4
+        queue.append((0, jug3))
+        # Empty Jug3
+        queue.append((jug4, 0))
+        # Pour Jug4 -> Jug3
+        pour = min(jug4, capacity[1] - jug3)
+        queue.append((jug4 - pour, jug3 + pour))
+        # Pour Jug3 -> Jug4
+        pour = min(jug3, capacity[0] - jug4)
+        queue.append((jug4 + pour, jug3 - pour))
+water_jug_4_3()
