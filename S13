@@ -1,0 +1,25 @@
+1) Minimax Algorithm Implementation
+
+def minimax(depth, node_index, is_max, scores, height):
+    # If leaf node reached
+    if depth == height:
+        return scores[node_index]
+    if is_max:
+        # Maximizer tries to get the maximum value
+        best = float('-inf')
+        best = max(best, minimax(depth + 1, node_index * 2, False, scores, height))
+        best = max(best, minimax(depth + 1, node_index * 2 + 1, False, scores, height))
+        return best
+    else:
+        # Minimizer tries to get the minimum value
+        best = float('inf')
+        best = min(best, minimax(depth + 1, node_index * 2, True, scores, height))
+        best = min(best, minimax(depth + 1, node_index * 2 + 1, True, scores, height))
+        return best
+# Driver code
+# Leaf node values of a game tree
+scores = [3, 5, 6, 9, 1, 2, 0, -1]
+# Height of the game tree
+height = 3   # since 2^3 = 8 leaf nodes
+optimal_value = minimax(0, 0, True, scores, height)
+print("Optimal value:", optimal_value)
